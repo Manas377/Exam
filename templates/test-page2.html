@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block css %}
+    {#    Space For Custom CSS    #}
+{% endblock css %}
+
+
+{% block content %}
+    <div class="" style="padding-top: 50px">
+
+        <form method="post">
+        {{ forms.management_form }}
+        {% csrf_token %}
+            {% for i in forms %}
+                {{i.as_ul }}
+            {% endfor %}
+
+        <input class="btn btn-primary" type="submit">
+        </form>
+    </div>
+{% endblock %}

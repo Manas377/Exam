@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block css %}
+    {#    Space For Custom CSS    #}
+{% endblock css %}
+
+
+{% block content %}
+    <div class="" style="padding-top: 50px">
+
+        <form method="post">
+            {% csrf_token %}
+
+            <table class="table">
+                {% for quest in object_list %}
+
+                    <div>
+                      <thead>
+                        <tr>
+                          <th id="{{ forloop.counter }}question" scope="col" colspan="2">
+                              {{ forloop.counter }}. {{ quest.question }}</th>
+                            <input id="{ forloop.counter }}question"  name="question" type="hidden" value="{{ quest.question }}">
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><input type="checkbox" value="choice_1" id="answer" name="answer">
+                              <label for="CH1">{{ quest.choice_1 }}</label>
+                          </td>
+                          <td><input type="checkbox" value="choice_2" id="answer" name="answer">
+                              <label for="CH2">{{ quest.choice_2 }}</label>
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td><input type="checkbox" value="choice_3" id="answer" name="answer">
+                              <label for="CH3">{{ quest.choice_3 }}</label>
+                          </td>
+                          <td><input type="checkbox" value="choice_4" id="answer" name="answer">
+                              <label for="CH4">{{ quest.choice_4 }}</label>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </div>
+                {% endfor %}
+
+            </table>
+        <input class="btn btn-primary" type="submit">
+        </form>
+
+
+<form>
+{{ form.as_p }}
+    {{ form2.as_table }}
+</form>
+
+    </div>
+{% endblock %}
