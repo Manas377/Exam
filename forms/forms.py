@@ -28,6 +28,12 @@ class AnswerForm(forms.ModelForm):
 
 
 class QuestionForm(forms.ModelForm):
+    choice_1 = forms.CharField(required=False)
+    choice_2 = forms.CharField(required=False)
+    choice_3 = forms.CharField(required=False)
+    choice_4 = forms.CharField(required=False)
+    marks = forms.IntegerField(required=False)
+    correct_choice = forms.CharField(required=False)
     class Meta:
         model = Question
         fields = '__all__'

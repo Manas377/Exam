@@ -4,10 +4,10 @@ from django.conf import settings
 
 class Question(models.Model):
     CHOICES = (
-        ("C1", "Choice 1"),
-        ("C2", "Choice 2"),
-        ("C3", "Choice 3"),
-        ("C4", "Choice 4")
+        ("CH1", "Choice 1"),
+        ("CH2", "Choice 2"),
+        ("CH3", "Choice 3"),
+        ("CH4", "Choice 4")
     )
     question = models.CharField(max_length=200)
     choice_1 = models.CharField(max_length=100)
@@ -15,14 +15,10 @@ class Question(models.Model):
     choice_3 = models.CharField(max_length=100)
     choice_4 = models.CharField(max_length=100)
     marks = models.IntegerField(default=int(5))
-    correct_choice = models.CharField(choices=CHOICES, max_length=2)
+    correct_choice = models.CharField(choices=CHOICES, max_length=3)
 
     def __str__(self):
         return self.question
-
-    def check_answer(self, choice):
-        if choice == self.correct_choice:
-            return True
 
 
 class TestSet(models.Model):
