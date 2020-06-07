@@ -12,6 +12,10 @@
         {{ forms.management_form }}
         {% csrf_token %}
             {% for i in forms %}
+
+            <input type="hidden" name="form-{{ forloop.counter0.value }}-id" value="{{ i.id.value }}" id="id_form-{{ forloop.counter0 }}-id">
+{#                <h1>name = {{ i.id.value }}</h1>#}
+
            <h3>{{ forloop.counter }}. {{ i.question.value }}</h3>
                 <input type="hidden" value="{{ i.question.value }}"
                        name="form-{{ forloop.counter0 }}-question" id="id_form-{{ forloop.counter0 }}-question">

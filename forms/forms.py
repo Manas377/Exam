@@ -32,11 +32,11 @@ class QuestionForm(forms.ModelForm):
     choice_2 = forms.CharField(required=False)
     choice_3 = forms.CharField(required=False)
     choice_4 = forms.CharField(required=False)
-    marks = forms.IntegerField(required=False)
-    correct_choice = forms.CharField(required=False)
+
     class Meta:
         model = Question
-        fields = '__all__'
+        fields = ('choice_4', 'choice_3', 'choice_2', 'choice_1', 'question')
+        exclude = ['marks', 'correct_choice']
         # widgets = {'choice_1': forms.RadioSelect, 'choice_2': forms.RadioSelect, 'choice_3': forms.RadioSelect,
         #            'choice_4': forms.}
 

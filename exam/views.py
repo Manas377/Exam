@@ -40,10 +40,11 @@ def TestView(request):
         if formset.is_valid():
             for form in formset:
                 print(form.cleaned_data['question'])
-                print(form.cleaned_data['choice_1'])
-                print(form.cleaned_data['choice_2'])
-                print(form.cleaned_data['choice_3'])
-                print(form.cleaned_data['choice_4'])
+                print(form.cleaned_data.get('choice_1'))
+                print(form.cleaned_data.get('choice_2'))
+                print(form.cleaned_data.get('choice_3'))
+                print(form.cleaned_data.get('choice_4'))
+                print(form['id'])
         # return True
         # forms = answerformsetclass(request.POST)
         # print(forms.as_ul())
@@ -82,13 +83,14 @@ def TestView2(request):
         if formset.is_valid():
             for form in formset:
                 print(form.cleaned_data['question'])
-                print(form.cleaned_data['choice_1'])
-                print(form.cleaned_data['choice_2'])
-                print(form.cleaned_data['choice_3'])
-                print(form.cleaned_data['choice_4'])
+                print(form.cleaned_data.get('choice_1'))
+                print(form.cleaned_data.get('choice_2'))
+                print(form.cleaned_data.get('choice_3'))
+                print(form.cleaned_data.get('choice_4'))
+                print(form['id'])
         else:
             for form in formset:
-                print(form.cleaned_data['question'])
+                print(form.cleaned_data.get(all))
                 print(form.errors)
 
         return redirect('exam:test2')
