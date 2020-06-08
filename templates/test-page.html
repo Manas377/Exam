@@ -6,53 +6,116 @@
 
 
 {% block content %}
-    <div class="" style="padding-top: 50px">
-
-        <form method="post">
+    <div class="container" style="margin-top: 80px">
+        <form method="post"">
+            {{ forms.management_form }}
             {% csrf_token %}
+<h1>{{ num }}</h1>
+            {% for i in forms %}
 
-            <table class="table">
-                {% for quest in object_list %}
+                <div class="row form-group">
 
-                    <div>
-                      <thead>
-                        <tr>
-                          <th id="{{ forloop.counter }}question" scope="col" colspan="2">
-                              {{ forloop.counter }}. {{ quest.question }}</th>
-                            <input id="{ forloop.counter }}question"  name="question" type="hidden" value="{{ quest.question }}">
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><input type="checkbox" value="choice_1" id="answer" name="answer">
-                              <label for="CH1">{{ quest.choice_1 }}</label>
-                          </td>
-                          <td><input type="checkbox" value="choice_2" id="answer" name="answer">
-                              <label for="CH2">{{ quest.choice_2 }}</label>
-                          </td>
-                        </tr>
+                    <div class="col-md-12">
+                         <input type="hidden" name="form-{{ forloop.counter0 }}-id"
+                                value="{{ i.id.value }}" id="id_form-{{ forloop.counter0 }}-id">
+                        <h3>{{ forloop.counter }}. {{ i.question.value }}</h3>
+                        <input type="hidden" value="{{ i.question.value }}"
+                                    name="form-{{ forloop.counter0 }}-question" id="id_form-{{ forloop.counter0 }}-question">
+                        <input type="radio" value="CH1"
+                               name="form-{{ forloop.counter0 }}-answered" id="id_form-{{ forloop.counter0 }}-answered">
+                        <label>{{ i.choice_1.value }}</label>
 
-                        <tr>
-                          <td><input type="checkbox" value="choice_3" id="answer" name="answer">
-                              <label for="CH3">{{ quest.choice_3 }}</label>
-                          </td>
-                          <td><input type="checkbox" value="choice_4" id="answer" name="answer">
-                              <label for="CH4">{{ quest.choice_4 }}</label>
-                          </td>
-                        </tr>
-                      </tbody>
+                        <br>
+
+                        <input type="radio" value="CH2"
+                               name="form-{{ forloop.counter0 }}-answered" id="id_form-{{ forloop.counter0 }}-answered">
+                        <label>{{ i.choice_2.value }}</label>
+
+                        <br>
+
+                        <input type="radio" value="CH3"
+                               name="form-{{ forloop.counter0 }}-answered" id="id_form-{{ forloop.counter0 }}-answered">
+                        <label>{{ i.choice_3.value }}</label>
+
+                        <br>
+
+                        <input type="radio" value="CH4"
+                               name="form-{{ forloop.counter0 }}-answered" id="id_form-{{ forloop.counter0 }}-answered">
+                        <label>{{ i.choice_4.value }}</label>
+
                     </div>
-                {% endfor %}
 
-            </table>
-        <input class="btn btn-primary" type="submit">
+                </div>
+                <hr>
+
+            {% endfor %}
+
+            <input class="btn btn-primary" type="submit">
+
         </form>
-
-
-<form>
-{{ form.as_p }}
-    {{ form2.as_table }}
-</form>
-
     </div>
+
+
+{#    <div class="" style="padding-top: 50px">#}
+{##}
+{#        <form method="post" action="{% url "exam:test2" %}">#}
+{#        {{ forms.management_form }}#}
+{#        {% csrf_token %}#}
+{#            {% for i in forms %}#}
+{##}
+{#            <input type="hidden" name="form-{{ forloop.counter0 }}-id"#}
+{#                   value="{{ i.id.value }}" id="id_form-{{ forloop.counter0 }}-id">#}
+{##}
+{#                <h1>value = {{ i.id.value }}</h1>#}
+{##}
+{#           <h3>{{ forloop.counter }}. {{ i.question.value }}</h3>#}
+{#                <input type="hidden" value="{{ i.question.value }}"#}
+{#                       name="form-{{ forloop.counter0 }}-question" id="id_form-{{ forloop.counter0 }}-question">#}
+{##}
+{#                <input type="radio" value="CH1"#}
+{#                       name="form-{{ forloop.counter0 }}-answered" id="id_form-{{ forloop.counter0 }}-answered">#}
+{#                <label>{{ i.choice_1.value }}</label>#}
+{##}
+{#                <br>#}
+{##}
+{#                <input type="radio" value="CH2"#}
+{#                       name="form-{{ forloop.counter0 }}-answered" id="id_form-{{ forloop.counter0 }}-answered">#}
+{#                <label>{{ i.choice_2.value }}</label>#}
+{##}
+{#                <br>#}
+{##}
+{#                <input type="radio" value="CH3"#}
+{#                       name="form-{{ forloop.counter0 }}-answered" id="id_form-{{ forloop.counter0 }}-answered">#}
+{#                <label>{{ i.choice_3.value }}</label>#}
+{##}
+{#                <br>#}
+{##}
+{#                <input type="radio" value="CH4"#}
+{#                       name="form-{{ forloop.counter0 }}-answered" id="id_form-{{ forloop.counter0 }}-answered">#}
+{#                <label>{{ i.choice_4.value }}</label>#}
+{##}
+{#                <hr>#}
+{##}
+{#            {% endfor %}#}
+{##}
+{##}
+{#        <input class="btn btn-primary" type="submit">#}
+{#        </form>#}
+{#            <form method="post">#}
+{#        {{ answer_forms.management_form }}#}
+{#        {% csrf_token %}#}
+{#            {% for i in answer_forms %}#}
+{#                {{ i.as_ul }}#}
+{#            {% endfor %}#}
+{##}
+{#        </form>#}
+{#            <form method="post">#}
+{#        {{ forms.management_form }}#}
+{#        {% csrf_token %}#}
+{#            {% for i in forms %}#}
+{#                {{ i.as_ul }}#}
+{#            {% endfor %}#}
+{#        <input class="btn btn-primary" type="submit">#}
+{#        </form>#}
+{#    </div>#}
 {% endblock %}

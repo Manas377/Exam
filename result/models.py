@@ -1,5 +1,6 @@
 from django.db import models
 from exam.models import Question
+from django.core.exceptions import ValidationError
 
 
 CHOICES = (
@@ -13,6 +14,14 @@ CHOICES = (
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     answered = models.CharField(max_length=3, null=True, blank=True)
+
+    def __str__(self):
+        return self.question.question
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            raise ValidationError("you may not edit an existing %s" % self._meta.model_name)
+        super (Answer, self).save(*args, **kwargs)
 
 
 class AnswerSet(models.Model):

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.forms import formset_factory
+
 
 # Create your views here.
 
@@ -9,137 +9,56 @@ from django.views.generic import View, FormView
 from exam.models import TestSet, Question
 from django.forms import modelformset_factory
 from forms.forms import TestAnswerForm, AnswerForm, QuestionForm, TestSetForm
-from result.models import Answer
+from result.models import Answer, AnswerSet
 
 
 class Home (View):
     def get(self, *args, **kwargs):
-        return render (self.request, 'home-page.html')
+        return render(self.request, 'home-page.html')
 
 
-def TestView(request):
-    formsetclass = modelformset_factory(Question, QuestionForm, fields={'question', 'choice_1', 'choice_2',
+class TestView(View):
+    formset_class = modelformset_factory(Question, QuestionForm, fields={'question', 'choice_1', 'choice_2',
                                                                         'choice_3', 'choice_4', 'marks',
                                                                         'correct_choice'}, extra=0)
-    test_set_qs = TestSet.objects.filter(title='A')
-    test_set = test_set_qs[0]
-    answerformsetclass = modelformset_factory(Answer, AnswerForm, fields='__all__',
+    test_set = TestSet.objects.filter(title='A').first()
+    answer_formset_class = modelformset_factory(Answer, AnswerForm, fields='__all__',
                                               extra=test_set.questions.all().count())
-
-    if request.method == 'GET':
-        formset = formsetclass(queryset=test_set.questions.all())
-
-        context = {
-            'forms': formset,
-
-        }
-        return render(request, 'test-page1.html', context)
-
-    else:
-        formset = formsetclass(request.POST)
-        if formset.is_valid():
-            for form in formset:
-                print(form.cleaned_data['question'])
-                print(form.cleaned_data.get('choice_1'))
-                print(form.cleaned_data.get('choice_2'))
-                print(form.cleaned_data.get('choice_3'))
-                print(form.cleaned_data.get('choice_4'))
-                print(form['id'])
-        # return True
-        # forms = answerformsetclass(request.POST)
-        # print(forms.as_ul())
-        #
-        # if forms.is_valid():
-        #     pass
-        # else:
-        #     print(forms.errors)
-        # instances = forms.save(commit=False)
-        # for instance in instances:
-        #     pass
-        #
-        return redirect('exam:test')
-
-
-def TestView2(request):
-    formsetclass = modelformset_factory(Question, QuestionForm, fields={'question', 'choice_1', 'choice_2',
-                                                                        'choice_3', 'choice_4', 'marks',
-                                                                        'correct_choice'}, extra=0)
-    test_set_qs = TestSet.objects.filter(title='A')
-    test_set = test_set_qs[0]
-    # answerformsetclass = modelformset_factory(Answer, AnswerForm, fields='__all__',
-    #                                           extra=test_set.questions.all().count())
-
-    if request.method == 'GET':
-        formset = formsetclass(queryset=test_set.questions.all())
+    num = test_set.questions.all ().count ()
+    def get(self, *args, **kwargs):
+        formset = self.formset_class(queryset=self.test_set.questions.all())
 
         context = {
             'forms': formset,
+            'num': self.num
 
         }
-        return render(request, 'test-page2.html', context)
+        return render(self.request, 'test-page.html', context)
 
-    else:
-        formset = formsetclass(request.POST)
+    def post(self, *args, **kwargs):
+        formset = self.formset_class(self.request.POST)
+        answer_formset = self.answer_formset_class()
+        answerset, created = AnswerSet.objects.get_or_create(title='A')
         if formset.is_valid():
             print("form is valid")
-            for form in formset:
-                print(form.cleaned_data['question'])
-                print(form.cleaned_data.get('choice_1'))
-                print(form.cleaned_data.get('choice_2'))
-                print(form.cleaned_data.get('choice_3'))
-                print(form.cleaned_data.get('choice_4'))
-                print(form.cleaned_data.get('answered'))
-                print(form['id'])
+
+            for form, answerform in zip(formset, answer_formset):
+                question = form.cleaned_data['question']
+                answer = form.cleaned_data['answered']
+                question_obj = Question.objects.filter(question=question).first()
+                answer_obj = Answer(question=question_obj, answered=answer)
+                answer_obj.save()
+                answerset.answer.add(answer_obj)
+                answerset.save()
+
+
+
+
         else:
             for form in formset:
-                print(form.cleaned_data.get('question'))
-                print(form['id'])
-
-                # TestView2  < input type = "hidden" name = "form-4-id" id = "id_form-4-id" >
-                # TestView1 < input type = "hidden" name = "form-4-id" value = "6" id = "id_form-4-id" >
-
                 print(form.errors)
 
-        return redirect('exam:test2')
-
-
-
-
-# class TestView(View):
-#     formsetclass = modelformset_factory (Question, QuestionForm, fields={'question', 'choice_1', 'choice_2',
-#                                                                          'choice_3', 'choice_4', 'marks',
-#                                                                          'correct_choice'}, extra=0)
-#     test_set_qs = TestSet.objects.filter(title='A')
-#     test_set = test_set_qs[0]
-#     answerformsetclass = modelformset_factory(Answer, AnswerForm, fields='__all__',
-#                                               extra=test_set.questions.all().count())
-#
-#     def get(self, *args, **kwargs):
-#         formset = self.formsetclass(queryset=self.test_set.questions.all())
-#         answerformset = self.answerformsetclass()
-#         context = {
-#             'forms': formset,
-#             'answer_forms': answerformset
-#         }
-#         return render(self.request, 'test-page1.html', context)
-#
-#     def post(self, *args, **kwargs):
-#         formset = self.answerformsetclass(self.request.POST)
-#         if formset.is_valid():
-#             pass
-#         else:
-#             print(formset.errors)
-#         instances = formset.save(commit=False)
-#         for instance in instances:
-#             pass
-#
-#         return redirect('exam:test')
-
-
-
-
-
-
+        return redirect('exam:test')
 
 
 
