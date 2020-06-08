@@ -81,6 +81,7 @@ def TestView2(request):
     else:
         formset = formsetclass(request.POST)
         if formset.is_valid():
+            print("form is valid")
             for form in formset:
                 print(form.cleaned_data['question'])
                 print(form.cleaned_data.get('choice_1'))
@@ -90,7 +91,12 @@ def TestView2(request):
                 print(form['id'])
         else:
             for form in formset:
-                print(form.cleaned_data.get(all))
+                print(form.cleaned_data.get('question'))
+                print(form['id'])
+
+                # TestView2  < input type = "hidden" name = "form-4-id" id = "id_form-4-id" >
+                # TestView1 < input type = "hidden" name = "form-4-id" value = "6" id = "id_form-4-id" >
+
                 print(form.errors)
 
         return redirect('exam:test2')
