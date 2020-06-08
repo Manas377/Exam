@@ -28,14 +28,24 @@ class AnswerForm(forms.ModelForm):
 
 
 class QuestionForm(forms.ModelForm):
+
+    CHOICES = (
+        ("CH1", "Choice 1"),
+        ("CH2", "Choice 2"),
+        ("CH3", "Choice 3"),
+        ("CH4", "Choice 4")
+    )
+
     choice_1 = forms.CharField(required=False)
     choice_2 = forms.CharField(required=False)
     choice_3 = forms.CharField(required=False)
     choice_4 = forms.CharField(required=False)
+    answered = forms.ChoiceField(required=False, choices=CHOICES, widget=forms.RadioSelect())
+
 
     class Meta:
         model = Question
-        fields = ('choice_4', 'choice_3', 'choice_2', 'choice_1', 'question')
+        fields = ('choice_4', 'choice_3', 'choice_2', 'choice_1', 'question', 'answered')
         exclude = ['marks', 'correct_choice']
         # widgets = {'choice_1': forms.RadioSelect, 'choice_2': forms.RadioSelect, 'choice_3': forms.RadioSelect,
         #            'choice_4': forms.}

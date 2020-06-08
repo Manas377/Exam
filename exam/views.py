@@ -88,6 +88,7 @@ def TestView2(request):
                 print(form.cleaned_data.get('choice_2'))
                 print(form.cleaned_data.get('choice_3'))
                 print(form.cleaned_data.get('choice_4'))
+                print(form.cleaned_data.get('answered'))
                 print(form['id'])
         else:
             for form in formset:
